@@ -1,14 +1,14 @@
 from math import inf
 
-from Const.Const import JOB, A, B, C
+from Component import Component
+from Const.Const import JOB, A, B, C, DONE
 
 
-class Gen:
+class Gen(Component):
 
     def __init__(self, name):
-        self.currentState = None  # ToDo Remove after
-        self.name = name
-        self.inputEvent = []  # define elsewhere
+        Component.__init__(name)
+        self.input = [JOB, DONE]
         self.q = 0
 
     def init(self):
@@ -19,7 +19,8 @@ class Gen:
             self.currentState = A
 
     def external(self):
-        if self.currentState == A and "job" in self.inputEvents:
+        if self.currentState == A and JOB in self.inputEvents:
+            print(f'{JOB} is in inputEvents')
             self.currentState = B
             self.q += 1
         else:
@@ -27,16 +28,16 @@ class Gen:
                 self.q -= 1
                 self.currentState = C
             else:
-                if self.currentState == C and "job" in self.inputEvent:
+                if self.currentState == C and "job" in self.inputEvents:
                     self.currentState = C
                 else:
-                    if self.currentState == C and "done" in self.inputEvent and self.q == 0:
+                    if self.currentState == C and "done" in self.inputEvents and self.q == 0:
                         self.currentState = A
                     else:
-                        if self.currentState == C and "done" in self.inputEvent and self.q > 0:
+                        if self.currentState == C and "done" in self.inputEvents and self.q > 0:
                             self.currentState = B
                         else:
-                            if self.currentState == C and "job" in self.inputEvent and self.q > 0:
+                            if self.currentState == C and "job" in self.inputEvents and self.q > 0:
                                 self.q += 1
                                 self.currentState = C
 

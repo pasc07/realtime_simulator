@@ -1,14 +1,14 @@
 from math import inf
 
-from Const.Const import FREE, BUSY
+from Component import Component
+from Const.Const import FREE, BUSY, REQ
 
 
-class Proc:
+class Proc(Component):
 
     def __init__(self, name):
-        self.currentState = None  # ToDo Remove after
-        self.name = name
-        self.inputEvent = []  # ToDo define elsewhere
+        Component.__init__(self, name)
+        Component.updateInput(REQ)
 
     def init(self):
         self.currentState = FREE
@@ -18,8 +18,10 @@ class Proc:
             self.currentState = FREE
 
     def external(self):
-        if self.currentState == FREE and "req" in self.inputEvents:
+        if self.currentState == FREE and REQ in self.inputEvents:
+            print(f'inputEvents: {self.inputEvents}')
             self.currentState = BUSY
+            print(f'current State: {self.currentState}')
 
     def avancement(self):
         if self.currentState == FREE:

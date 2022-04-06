@@ -1,11 +1,14 @@
 from math import inf
 
+from Component import Component
+from Const.Const import JOB
 
-class Gen:
+
+class Gen(Component):
 
     def __init__(self, name):
+        Component.__init__(name)
         self.currentState = None
-        self.name = name
         self.inputEvent = []
 
     def init(self):
@@ -25,4 +28,4 @@ class Gen:
 
     def generateOutput(self):
         if self.currentState == 0:
-            return {"job": True}  #Reformat
+            return {JOB: True}  #Reformat
