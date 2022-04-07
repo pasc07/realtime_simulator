@@ -8,6 +8,7 @@ class Component(ABC):
         self.name = name
         self.inputEvents = {}
         self.inputs = []
+        self.outputEvents = {}
         self.currentState = None  # ToDo Remove after
         self.tr = 0
         self.te = 0
@@ -36,16 +37,10 @@ class Component(ABC):
 
     def write(self, key, value):  # Write event and notify all entry
         outputEvents = {key: value}
+        # print(f'OutputEvents: {outputEvents}')
         # Consulter les entrees connectees
-        if key in self.inputs:
-            self.inputEvents.update(outputEvents)
+        # print(f'inputs in write: {self.inputs}')
+        self.outputEvents.update(outputEvents)
 
     def deleteEvent(self, key):
         del self.inputEvents[key]
-
-
-class Connecteur:
-    def __init__(self, G, B, F):
-        self.G = G
-        self.B = B
-        self.F = F
