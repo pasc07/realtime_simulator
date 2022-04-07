@@ -1,14 +1,14 @@
 from math import inf
 
 from Component import Component
-from Const.Const import FREE, BUSY, REQ
+from Const.Const import FREE, BUSY, REQ, DONE
 
 
 class Proc(Component):
 
     def __init__(self, name):
         Component.__init__(self, name)
-        Component.updateInput(REQ)
+        Component.inputs = [REQ]
 
     def init(self):
         self.currentState = FREE
@@ -19,7 +19,8 @@ class Proc(Component):
 
     def external(self):
         if self.currentState == FREE and REQ in self.inputEvents:
-            print(f'inputEvents: {self.inputEvents}')
+            # print(f'inputEvents: {self.inputEvents}')
+            self.inputEvents = {}
             self.currentState = BUSY
             print(f'current State: {self.currentState}')
 
@@ -33,4 +34,5 @@ class Proc(Component):
 
     def generateOutput(self):
         if self.currentState == BUSY:
-            return {"done": True}  # in const
+            Component.write(self, DONE, True)
+            return {"done": True}

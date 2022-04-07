@@ -6,8 +6,8 @@ from Const.Const import JOB, DONE, REQ
 class Component(ABC):
     def __init__(self, name):
         self.name = name
-        self.inputEvents = {JOB: False, REQ: False, DONE: False}
-        #self.inputs = []
+        self.inputEvents = {}
+        self.inputs = []
         self.currentState = None  # ToDo Remove after
         self.tr = 0
         self.te = 0
@@ -34,14 +34,18 @@ class Component(ABC):
     def generateOutput(self):
         pass
 
-    def write(self, key, value):
-        self.inputEvents[key] = value
+    def write(self, key, value):  # Write event and notify all entry
+        outputEvents = {key: value}
+        # Consulter les entrees connectees
+        if key in self.inputs:
+            self.inputEvents.update(outputEvents)
 
-    def delete(self, key):
+    def deleteEvent(self, key):
         del self.inputEvents[key]
 
-    def updateInput(self, key):
-        self.inputs = list(key)
 
-    def inputEventWrapper(self):
-        pass
+class Connecteur:
+    def __init__(self, G, B, F):
+        self.G = G
+        self.B = B
+        self.F = F
