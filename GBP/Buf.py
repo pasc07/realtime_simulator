@@ -1,14 +1,14 @@
 from math import inf
 
 from Component import Component
-from Const.Const import JOB, A, B, C, DONE
+from Const.Const import JOB, A, B, C, DONE, REQ
 
 
-class Gen(Component):
+class Buf(Component):
 
     def __init__(self, name):
-        Component.__init__(name)
-        self.input = [JOB, DONE]
+        Component.__init__(self, name)
+        Component.inputs = [JOB, DONE]
         self.q = 0
 
     def init(self):
@@ -29,6 +29,7 @@ class Gen(Component):
                 self.currentState = C
             else:
                 if self.currentState == C and "job" in self.inputEvents:
+                    self.q += 1
                     self.currentState = C
                 else:
                     if self.currentState == C and "done" in self.inputEvents and self.q == 0:
@@ -36,10 +37,7 @@ class Gen(Component):
                     else:
                         if self.currentState == C and "done" in self.inputEvents and self.q > 0:
                             self.currentState = B
-                        else:
-                            if self.currentState == C and "job" in self.inputEvents and self.q > 0:
-                                self.q += 1
-                                self.currentState = C
+        self.inputEvents = {}
 
     def avancement(self):
         if self.currentState == A:
@@ -54,4 +52,5 @@ class Gen(Component):
 
     def generateOutput(self):
         if self.currentState == B:
+            Component.write(self, REQ, True)
             return {"req": True}  # Reformat
