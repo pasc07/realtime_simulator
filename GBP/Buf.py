@@ -4,7 +4,7 @@ from Component import Component
 from Const.Const import JOB, A, B, C, DONE
 
 
-class Gen(Component):
+class Buf(Component):
 
     def __init__(self, name):
         Component.__init__(name)
