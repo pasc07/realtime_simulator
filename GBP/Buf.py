@@ -51,3 +51,6 @@ class Buf(Component):
             print(f'q: {self.q}')
             print("Output generate REQ")
             return {"req": True}  # Reformat
+
+    def conflict(self):
+        self.internal()

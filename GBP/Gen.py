@@ -30,3 +30,6 @@ class Gen(Component):
             Component.write(self, JOB, True)
             print("Output generate JOB")
             return {JOB: True}  # Return a dict
+
+    def conflict(self):
+        self.internal()

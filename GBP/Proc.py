@@ -6,6 +6,7 @@ from Const.Const import FREE, BUSY, REQ, DONE
 
 class Proc(Component):
 
+
     def __init__(self, name):
         Component.__init__(self, name)
         self.inputs = [REQ]
@@ -39,3 +40,6 @@ class Proc(Component):
             self.write(DONE, True)
             print("Output generate DONE")
             return {"done": True}
+
+    def conflict(self):
+        self.internal()

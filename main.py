@@ -6,5 +6,5 @@ from Simulator.Simulator import Simulator, geneStep
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # Simulator()
-    geneStep()
+    Simulator()
+    # geneStep()

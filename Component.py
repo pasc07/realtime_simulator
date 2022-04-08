@@ -35,6 +35,10 @@ class Component(ABC):
     def generateOutput(self):
         pass
 
+    @abstractmethod
+    def conflict(self):
+        pass
+
     def write(self, key, value):  # Write event and notify all entry
         outputEvents = {key: value}
         # print(f'OutputEvents: {outputEvents}')

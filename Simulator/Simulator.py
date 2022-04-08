@@ -82,9 +82,7 @@ def Simulator():
                 component.tn = t + component.te
                 component.te = 0
             elif component in imms and component.inputEvents:
-                # component.conflict()
-                component.external()
-                component.internal()
+                component.conflict()
                 component.tr = component.avancement()
                 component.tl = t
                 component.tn = t + component.te
@@ -103,12 +101,13 @@ def Simulator():
 def geneStep():
     step1 = Step("step", 0.0, 3, 1.25)
     t = 0
-    t_fin = 5
+    t_fin = 100
 
     step1.init()
     step1.tr = step1.avancement()
-    print(f't: {t}')
+    print(f' Boucle ')
     while t < t_fin:
+        print(f't: {t}')
         tr_min = step1.tr
         t = t + tr_min
         step1.te += tr_min
@@ -121,3 +120,4 @@ def geneStep():
         step1.te = 0
         step1.inputEvents.clear()
         step1.outputEvents.clear()
+    print(f't: {t}')
