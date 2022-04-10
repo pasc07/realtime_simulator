@@ -6,8 +6,9 @@ from Const.Const import JOB, DONE, REQ
 class Component(ABC):
     def __init__(self, name):
         self.name = name
-        self.inputEvents = {JOB: False, REQ: False, DONE: False}
-        #self.inputs = []
+        self.inputEvents = {}  # Notify by other components
+        self.inputs = []
+        self.outputEvents = {}
         self.currentState = None  # ToDo Remove after
         self.tr = 0
         self.te = 0
@@ -34,14 +35,13 @@ class Component(ABC):
     def generateOutput(self):
         pass
 
-    def write(self, key, value):
-        self.inputEvents[key] = value
-
-    def delete(self, key):
-        del self.inputEvents[key]
-
-    def updateInput(self, key):
-        self.inputs = list(key)
-
-    def inputEventWrapper(self):
+    @abstractmethod
+    def conflict(self):
         pass
+
+    def write(self, key, value):  # Write event and notify all entry
+        outputEvents = {key: value}
+        self.outputEvents.update(outputEvents)
+
+    def deleteEvent(self, key):
+        del self.inputEvents[key]

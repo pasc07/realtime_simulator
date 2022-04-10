@@ -1,3 +1,5 @@
+
+
 DONE = 'done'
 JOB = 'job'
 REQ = "req"
@@ -7,4 +9,6 @@ A = "a"
 B = "b"
 C = "c"
 S = "s"
+INIT = "init"
+GEN_OUTPUT = "gene_output"
 

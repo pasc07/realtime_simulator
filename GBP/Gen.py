@@ -1,15 +1,13 @@
 from math import inf
 
 from Component import Component
-from Const.Const import JOB
+from Const.Const import JOB, DONE
 
 
 class Gen(Component):
 
     def __init__(self, name):
-        Component.__init__(name)
-        self.currentState = None
-        self.inputEvent = []
+        Component.__init__(self, name)
 
     def init(self):
         self.currentState = 0
@@ -17,6 +15,7 @@ class Gen(Component):
     def internal(self):
         if self.currentState == 0:
             self.currentState = 0
+        print(f'current State: {self.currentState}')
 
     def external(self):
         pass
@@ -28,4 +27,9 @@ class Gen(Component):
 
     def generateOutput(self):
         if self.currentState == 0:
-            return {JOB: True}  #Reformat
+            Component.write(self, JOB, True)
+            print("Output generate JOB")
+            return {JOB: True}  # Return a dict
+
+    def conflict(self):
+        self.internal()
