@@ -241,8 +241,6 @@ def simu_adder():
         adder.inputEvents.clear()
         print(f't:  {t}')
         print("*********************************************************")
-    xValue.append(xValue[-1] + 0.3)
-    yValue.append(yValue[-1])
     xValue_array = np.asarray(xValue)
     yValue_array = np.asarray(yValue)
     plot_step(xValue_array, yValue_array)
