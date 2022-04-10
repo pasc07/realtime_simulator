@@ -26,6 +26,7 @@ class Proc(Component):
             # self.inputEvents = {}
             self.currentState = BUSY
             print(f'current State: {self.currentState}')
+        self.inputEvents.clear()
 
     def avancement(self):
         if self.currentState == FREE:

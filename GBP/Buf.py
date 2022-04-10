@@ -33,7 +33,7 @@ class Buf(Component):
             self.currentState = A
         elif self.currentState == C and "done" in self.inputEvents and self.q > 0:
             self.currentState = B
-        # self.inputEvents = {}
+        self.inputEvents.clear()
         print(f'current State: {self.currentState}')
 
     def avancement(self):

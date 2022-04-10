@@ -1,6 +1,7 @@
 # Ordonnanceur
 from math import inf
 
+from Const.Const import JOB
 from GBP.Adder import Adder
 from GBP.Buf import Buf
 from GBP.Gen import Gen
@@ -131,15 +132,15 @@ def geneStep():
 
 
 def simu_adder():
+    gen = Gen("Generator")
     step1 = Step("step1", 1.0, -3, 0.65)
     step2 = Step("step2", 0.0, 1, 0.35)
     step3 = Step("step3", 0.0, 1, 1.0)
     step4 = Step("step4", 0.0, 4, 1.5)
-    step5 = Step("step5", 0.0, 0.0, 2)
     adder = Adder("Adder")
     t = 0
-    t_fin = 100
-    Components = [step1, step2, step3, step4, step5]
+    t_fin = 2
+    Components = [gen, step1, step2, step3, step4]
     imms = []
     # init
     adder.init()  # ToDo
@@ -180,16 +181,16 @@ def simu_adder():
         dict_out = {}
         for component in Components:
             component.generateOutput()
-            dict_out.update(component.outputEvents)
-        val = adder.adder_output(dictionary=dict_out)
-        if t < inf:
-            xValue.append(t)
-        else:
-            # xValue.append(max([step1.ts, step2.ts, step3.ts, step4.ts]))
-            xValue.append(2.0)
+            adder.inputEvents = component.outputEvents
+            adder.external()
+            adder.generateOutput()
+            if (JOB or "add") not in component.outputEvents:
+                dict_out.update(component.outputEvents)
+            adder.internal()
+        val = adder.add(dictionary=dict_out)
+        xValue.append(t)
         yValue.append(val)
-        print(f'adder *********************** dict ={dict_out} : {val}')
-
+        print(f'adder *********************** dict ={adder.inputEvents} : {val}')
         # for component in Components:
         # print(f'La liste des events {component.name}: {component.inputEvents}')
         # Liste des entree impactee par les sortie
@@ -229,9 +230,11 @@ def simu_adder():
                 component.tl = t
                 component.tn = t + component.te
                 component.te = 0
-        for component in Components:
-            component.inputEvents.clear()
-            component.outputEvents.clear()
+
+        # for component in Components:
+        #     component.inputEvents.clear()
+        #     component.outputEvents.clear()
+
         list_tr.clear()
         imms.clear()
         ins.clear()

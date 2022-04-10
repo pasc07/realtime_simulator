@@ -30,21 +30,24 @@ class Adder(Component):
     def generateOutput(self):
         if self.currentState == GEN_OUTPUT:
             self.write("output", "add")
-            print("Output generate adder output")
+            print("Add operation")
         else:
             self.write("output", "No_operation")
+            print("No operation")
 
     def conflict(self):
         self.external()
         self.internal()
 
-    def adder_output(self, dictionary):
+    def add(self, dictionary):
         # Wrapper dict to list
-        values = list(dictionary.values())
-        add = 0
-        for value in values:
-            add += float(value)
-            print(f'value: {float(value)} ')
-        self.output = add
-        print(f'output adder: {add}')
-        return self.output
+        if self.outputEvents["output"] == "add":
+            values = list(dictionary.values())
+            add = 0
+            for value in values:
+                if value is not None:
+                    add += float(value)
+                print(f'value: {float(value)} ')
+            self.output = add
+            print(f'output adder: {add}')
+            return self.output
