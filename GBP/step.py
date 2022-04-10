@@ -4,6 +4,7 @@ from Component import Component
 
 
 class Step(Component):
+
     def __init__(self, name, xi, xf, ts):
         Component.__init__(self, name)
         self.xi = xi
@@ -30,8 +31,11 @@ class Step(Component):
 
     def generateOutput(self):
         if self.currentState == 0:
-            self.write("xi", self.xi)
-            print("Output generate xi")
+            self.write(f"xi_{self.name}", self.xi)
+            print(f"Output generate {self.name} xi = {self.xi}")
         elif self.currentState == 1:
-            self.write("xf", self.xf)
-            print("Output generate xf")
+            self.write(f"xf_{self.name}", self.xf)
+            print(f"Output generate {self.name} xf = {self.xf}")
+
+    def conflict(self):
+        pass

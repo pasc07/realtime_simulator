@@ -6,7 +6,7 @@ from Const.Const import JOB, DONE, REQ
 class Component(ABC):
     def __init__(self, name):
         self.name = name
-        self.inputEvents = {}
+        self.inputEvents = {}  # Notify by other components
         self.inputs = []
         self.outputEvents = {}
         self.currentState = None  # ToDo Remove after
@@ -41,9 +41,6 @@ class Component(ABC):
 
     def write(self, key, value):  # Write event and notify all entry
         outputEvents = {key: value}
-        # print(f'OutputEvents: {outputEvents}')
-        # Consulter les entrees connectees
-        # print(f'inputs in write: {self.inputs}')
         self.outputEvents.update(outputEvents)
 
     def deleteEvent(self, key):
