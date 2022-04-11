@@ -1,6 +1,7 @@
 from math import inf
 
 from Component import Component
+from Const.Const import STEP
 
 
 class Step(Component):
@@ -18,24 +19,32 @@ class Step(Component):
         print(f'current State (step): {self.currentState}')
         if self.currentState == 0:
             self.currentState = 1
-        print(f'current State (step): {self.currentState}')
+            print(f'current State (step): {self.currentState}')
+        elif self.currentState == 1:
+            self.currentState = 2
+            print(f'current State (step): {self.currentState}')
+        elif self.currentState == 2:
+            self.currentState = 2
+            print(f'current State (step): {self.currentState}')
 
     def external(self):
         pass
 
     def avancement(self):
         if self.currentState == 0:
-            return self.ts
+            return 0.0
         elif self.currentState == 1:
+            return self.ts
+        elif self.currentState == 2:
             return inf
 
     def generateOutput(self):
         if self.currentState == 0:
-            self.write(f"xi_{self.name}", self.xi)
+            self.write(f"{self.name}", self.xi)
             print(f"Output generate {self.name} xi = {self.xi}")
         elif self.currentState == 1:
-            self.write(f"xf_{self.name}", self.xf)
+            self.write(f"{self.name}", self.xf)
             print(f"Output generate {self.name} xf = {self.xf}")
 
     def conflict(self):
-        pass
+        self.internal()

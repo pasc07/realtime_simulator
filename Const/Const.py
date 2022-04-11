@@ -11,4 +11,4 @@ C = "c"
 S = "s"
 INIT = "init"
 GEN_OUTPUT = "gene_output"
-
+STEP = 'step'
