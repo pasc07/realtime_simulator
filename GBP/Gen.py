@@ -15,6 +15,7 @@ class Gen(Component):
     def internal(self):
         if self.currentState == 0:
             self.currentState = 0
+            print(f'current State: {self.currentState}')
 
     def external(self):
         pass
@@ -27,4 +28,8 @@ class Gen(Component):
     def generateOutput(self):
         if self.currentState == 0:
             Component.write(self, JOB, True)
+            print("Output generate JOB")
             return {JOB: True}  # Return a dict
+
+    def conflict(self):
+        self.external()
