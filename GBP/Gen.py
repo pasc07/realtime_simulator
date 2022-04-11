@@ -15,7 +15,7 @@ class Gen(Component):
     def internal(self):
         if self.currentState == 0:
             self.currentState = 0
-        print(f'current State: {self.currentState}')
+            print(f'current State: {self.currentState}')
 
     def external(self):
         pass
@@ -32,4 +32,4 @@ class Gen(Component):
             return {JOB: True}  # Return a dict
 
     def conflict(self):
-        self.internal()
+        self.external()

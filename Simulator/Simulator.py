@@ -11,16 +11,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from Plot.PlotData import plot_step
+from Simulator.Integral import Integral
 
 
 def Simulator():
     t = 0
-    t_fin = 10
+    t_fin = 20
     ta = 0
-    gen = Gen("Generator 1")
-    proc = Proc("Process 1")
-    buf = Buf("Buffer 1")
-    Components = [gen, buf, proc]
+    # gen = Gen("Generator 1")
+    # proc = Proc("Process 1")
+    # buf = Buf("Buffer 1")
+    # Components = [gen, buf, proc]
+    step1 = Step("step1", 1.0, -3, 0.65)
+    step2 = Step("step2", 0.0, 1, 0.35)
+    step3 = Step("step3", 0.0, 1, 1.0)
+    step4 = Step("step4", 0.0, 4, 1.5)
+    adder = Adder("Adder")
+    intg = Integral("Integral")
+    Components = [step4]
     imms = []
 
     # init
@@ -32,7 +40,12 @@ def Simulator():
 
     print("********Les evolutions*********")
     print(f't:  {t}')
+    # Variable to draw figure
+    xValue = [0]
+    yValue = [0]
+    intValue = []
     while t < t_fin:
+        print(f't Start:  {t}')
         imms = []
         list_tr = []
         # for component in Components:
@@ -56,8 +69,18 @@ def Simulator():
             component.te += tr_min
             component.tr -= tr_min
 
-        for component in Components:
+        dict_out = {}
+        for component in imms:
             component.generateOutput()
+            adder.inputEvents = component.outputEvents
+            adder.external()
+            if JOB not in component.outputEvents:
+                dict_out.update(component.outputEvents)
+            adder.internal()
+        val = adder.add(dictionary=dict_out)
+        xValue.append(t)
+        yValue.append(val)
+        print(f'adder *********************** dict ={adder.inputEvents} : {val}')
         # for component in Components:
         # print(f'La liste des events {component.name}: {component.inputEvents}')
         # Liste des entree impactee par les sortie
@@ -78,18 +101,21 @@ def Simulator():
             print(f'tr {component.name}: {component.tr}')
             # print(f'Imms 2 :{imms}')
             if component in imms and not component.inputEvents:  # dict vide
+                print(f'****Internal {component}')
                 component.internal()
                 component.tr = component.avancement()
                 component.tl = t
                 component.tn = t + component.te
                 component.te = 0
             elif component not in imms and component.inputEvents:
+                print(f'****External {component}')
                 component.external()
                 component.tr = component.avancement()
                 component.tl = t
                 component.tn = t + component.te
                 component.te = 0
             elif component in imms and component.inputEvents:
+                print(f'****Conflict {component}')
                 component.conflict()
                 component.tr = component.avancement()
                 component.tl = t
@@ -101,34 +127,12 @@ def Simulator():
         list_tr.clear()
         imms.clear()
         ins.clear()
-
-        print(f't:  {t}')
+        adder.inputEvents.clear()
+        print(f't End:  {t}')
         print("*********************************************************")
-
-
-def geneStep():
-    step1 = Step("step", 0.0, 3, 1.25)
-    t = 0
-    t_fin = 100
-
-    step1.init()
-    step1.tr = step1.avancement()
-    print(f' Boucle ')
-    while t < t_fin:
-        print(f't: {t}')
-        tr_min = step1.tr
-        t = t + tr_min
-        step1.te += tr_min
-        step1.tr -= tr_min
-        step1.generateOutput()
-        step1.internal()
-        step1.tr = step1.avancement()
-        step1.tl = t
-        step1.tn = t + step1.te
-        step1.te = 0
-        step1.inputEvents.clear()
-        step1.outputEvents.clear()
-    print(f't: {t}')
+    xValue_array = np.asarray(xValue)
+    yValue_array = np.asarray(yValue)
+    plot_step(xValue_array, yValue_array)
 
 
 def simu_adder():
@@ -138,9 +142,10 @@ def simu_adder():
     step3 = Step("step3", 0.0, 1, 1.0)
     step4 = Step("step4", 0.0, 4, 1.5)
     adder = Adder("Adder")
+    intg = Integral("Integral")
     t = 0
-    t_fin = 2
-    Components = [gen, step1, step2, step3, step4]
+    t_fin = 10
+    Components = [step1, step2, step3, step4]
     imms = []
     # init
     adder.init()  # ToDo
@@ -152,6 +157,7 @@ def simu_adder():
     # Variable to draw figure
     xValue = [0]
     yValue = [0]
+    intValue = []
     print(f' Boucle ')
     while t < t_fin:
         print(f't: {t}')
@@ -179,15 +185,18 @@ def simu_adder():
             component.te += tr_min
             component.tr -= tr_min
         dict_out = {}
-        for component in Components:
+        for component in imms:
             component.generateOutput()
+            # ToDo
             adder.inputEvents = component.outputEvents
             adder.external()
-            adder.generateOutput()
-            if (JOB or "add") not in component.outputEvents:
+            if JOB not in component.outputEvents:
                 dict_out.update(component.outputEvents)
             adder.internal()
         val = adder.add(dictionary=dict_out)
+        intg.input_xValues.append(t)
+        intg.input_yValues.append(val)
+        intValue.append(intg.integralTimeStep())
         xValue.append(t)
         yValue.append(val)
         print(f'adder *********************** dict ={adder.inputEvents} : {val}')
@@ -244,3 +253,5 @@ def simu_adder():
     xValue_array = np.asarray(xValue)
     yValue_array = np.asarray(yValue)
     plot_step(xValue_array, yValue_array)
+    # yValue_array = np.asarray(intValue)
+    # plot_step(xValue_array, yValue_array)

@@ -41,13 +41,13 @@ class Adder(Component):
 
     def add(self, dictionary):
         # Wrapper dict to list
-        if self.outputEvents["output"] == "add":
-            values = list(dictionary.values())
-            add = 0
-            for value in values:
-                if value is not None:
-                    add += float(value)
-                print(f'value: {float(value)} ')
-            self.output = add
-            print(f'output adder: {add}')
-            return self.output
+       # if self.outputEvents["output"] == "add":
+        values = list(dictionary.values())
+        add = 0
+        for value in values:
+            if value is not None:
+                add += float(value)
+            print(f'value: {float(value)} ')
+        self.output = add
+        print(f'output adder: {add}')
+        return self.output

@@ -17,7 +17,7 @@ class Buf(Component):
     def internal(self):
         if self.currentState == B:
             self.q -= 1
-            self.currentState = A
+            self.currentState = C
         print(f'current State: {self.currentState}')
 
     def external(self):
@@ -26,13 +26,13 @@ class Buf(Component):
             # print(f'{JOB} is in inputEvents')
             self.currentState = B
             self.q += 1
-        elif self.currentState == C and "job" in self.inputEvents:
-            self.q += 1
-            self.currentState = C
         elif self.currentState == C and "done" in self.inputEvents and self.q == 0:
             self.currentState = A
         elif self.currentState == C and "done" in self.inputEvents and self.q > 0:
             self.currentState = B
+        elif self.currentState == C and "job" in self.inputEvents:
+            self.q += 1
+            self.currentState = C
         self.inputEvents.clear()
         print(f'current State: {self.currentState}')
 
