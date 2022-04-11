@@ -29,6 +29,7 @@ def Simulator():
     step5 = Step("step5", 0.0, 4.9, 1.5)
     adder = Adder("Adder")
     plot = PlotData("Plot")
+    # plot.graphInit()
     intg = Integral("Integral")
     adder.inputs = [step1.name, step2.name, step3.name, step4.name]
     Components = [step1, step2, step3, step4, adder]
@@ -113,14 +114,16 @@ def Simulator():
                 component.tn = t + component.te
                 component.te = 0
         plot.addPoint(t, adder.output)
+        # plot.updateGraph()
         for component in Components:
             component.inputEvents.clear()
             component.outputEvents.clear()
         list_tr.clear()
         imms.clear()
         ins.clear()
-        # adder.inputEvents.clear()
         print(f't End:  {t}')
         print("*********************************************************")
     # Plot
+    # plot.updateGraph()
+    # plot.graphInit()
     plot.plot_step()
