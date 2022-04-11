@@ -70,3 +70,7 @@ def Simulator():
                 component.tr = component.avancement()
                 component.tl = t - component.te
                 component.tn = t + component.tr
+
+
+.0
+00
