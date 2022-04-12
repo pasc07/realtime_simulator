@@ -28,7 +28,7 @@ def Simulator():
     step4 = Step("step4", 0.0, 4, 1.5)
     adder = Adder("Adder")
     intg = Integral("Integral")
-    Components = [step4]
+    Components = [step1]
     imms = []
 
     # init
