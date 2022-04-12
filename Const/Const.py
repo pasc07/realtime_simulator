@@ -14,3 +14,4 @@ GEN_OUTPUT = "gene_output"
 STEP = 'step'
 ADDER = "adder"
 INTEGRAL = "integral"
+INTEGRALDQ = "integralDQ"

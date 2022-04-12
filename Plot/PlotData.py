@@ -18,15 +18,15 @@ class PlotData:
         self.xValue.append(xValue)
         self.yValue.append(yValue)
 
-    def plot_step(self):
+    def plot_step(self, legend='Simulation', color='blue'):
         # Variable to draw figure
         xValue_array = np.asarray(self.xValue)
         yValue_array = np.asarray(self.yValue)
 
         x = xValue_array
         y = yValue_array
-        print(x)
-        print(y)
+        # print(x)
+        # print(y)
         # plt.step(x, y, label='pre (default)')
         # plt.plot(x, y, 'o--', color='grey', alpha=0.3)
 
@@ -34,11 +34,11 @@ class PlotData:
         # plt.plot(x, y + 1, 'o--', color='grey', alpha=0.3)
 
         # plt.step(x, y, where='post', label='post')
-        plt.plot(x, y, '-', color='green', alpha=0.6)
+        plt.plot(x, y, '-', color=f'{color}', alpha=0.6)
 
         plt.grid(axis='both', color='0.95')
-        plt.legend(title='Parameter where:')
-        plt.title('plt.step(where=...)')
+        plt.legend(title=f'{legend}')
+        plt.title('Discrete Simulation Graph')
         self.buffer = plt
 
     def showGraph(self):

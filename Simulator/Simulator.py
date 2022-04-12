@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from Plot.PlotData import PlotData
-from Simulator.Integral import Integral
+from Simulator.Integral import IntegralDT, IntegralDQ
 
 
 def Simulator():
@@ -28,13 +28,19 @@ def Simulator():
     step4 = Step("step4", 0.0, 4, 1.5)
     step5 = Step("step5", 0.0, 4.9, 1.5)
     adder = Adder("adder")
+    # adder2 = Adder("adder2")
     plot = PlotData("Plot")
     plot2 = PlotData("Plot2")
+    plot3 = PlotData("Plot3")
     # plot.graphInit()
-    intg = Integral("Integral")
+    # plot2.graphInit()
+    # plot3.graphInit()
+    intg = IntegralDT("IntegralDT")
+    intg2 = IntegralDQ("IntegralDQ")
     intg.inputs = [adder.name]
+    intg2.inputs = [adder.name]
     adder.inputs = [step1.name, step2.name, step3.name, step4.name]
-    Components = [step1, step2, step3, step4, adder, intg]
+    Components = [step1, step2, step3, step4, adder, intg, intg2]
     # adder.inputs = [step3.name]
     # Components = [ step3, adder, intg]
 
@@ -120,7 +126,10 @@ def Simulator():
                 component.te = 0
         plot.addPoint(t, adder.output)
         plot2.addPoint(t, intg.Integral)
+        plot3.addPoint(t, intg2.Integral)
         # plot.updateGraph()
+        # plot2.updateGraph()
+        # plot3.updateGraph()
         for component in Components:
             component.inputEvents.clear()
             component.outputEvents.clear()
@@ -131,7 +140,7 @@ def Simulator():
         print("*********************************************************")
     # Plot
     # plot.updateGraph()
-    # plot.graphInit()
-    plot.plot_step()
-    plot2.plot_step()
+    plot.plot_step(legend=f'{adder.name}')
+    plot2.plot_step('Discrete time integral', 'green')
+    plot3.plot_step('DT green, DQ red', 'red')
     plot.showGraph()
