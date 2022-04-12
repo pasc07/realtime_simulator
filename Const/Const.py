@@ -12,3 +12,5 @@ S = "s"
 INIT = "init"
 GEN_OUTPUT = "gene_output"
 STEP = 'step'
+ADDER = "adder"
+INTEGRAL = "integral"

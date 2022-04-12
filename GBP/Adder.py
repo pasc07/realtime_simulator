@@ -1,7 +1,7 @@
 from math import inf
 
 from Component import Component
-from Const.Const import INIT, GEN_OUTPUT, STEP
+from Const.Const import INIT, GEN_OUTPUT, STEP, ADDER
 
 
 class Adder(Component):
@@ -40,7 +40,7 @@ class Adder(Component):
 
     def generateOutput(self):
         if self.currentState == GEN_OUTPUT:
-            self.write("adder", self.add())
+            self.write(ADDER, self.add())
             print("Add operation occured")
 
     def conflict(self):

@@ -16,7 +16,7 @@ from Simulator.Integral import Integral
 
 def Simulator():
     t = 0
-    t_fin = 20
+    t_fin = 2
     ta = 0
     # gen = Gen("Generator 1")
     # proc = Proc("Process 1")
@@ -27,12 +27,17 @@ def Simulator():
     step3 = Step("step3", 0.0, 1, 1.0)
     step4 = Step("step4", 0.0, 4, 1.5)
     step5 = Step("step5", 0.0, 4.9, 1.5)
-    adder = Adder("Adder")
+    adder = Adder("adder")
     plot = PlotData("Plot")
+    plot2 = PlotData("Plot2")
     # plot.graphInit()
     intg = Integral("Integral")
+    intg.inputs = [adder.name]
     adder.inputs = [step1.name, step2.name, step3.name, step4.name]
-    Components = [step1, step2, step3, step4, adder]
+    Components = [step1, step2, step3, step4, adder, intg]
+    # adder.inputs = [step3.name]
+    # Components = [ step3, adder, intg]
+
     # init
     for component in Components:
         component.init()
@@ -114,6 +119,7 @@ def Simulator():
                 component.tn = t + component.te
                 component.te = 0
         plot.addPoint(t, adder.output)
+        plot2.addPoint(t, intg.Integral)
         # plot.updateGraph()
         for component in Components:
             component.inputEvents.clear()
@@ -127,3 +133,5 @@ def Simulator():
     # plot.updateGraph()
     # plot.graphInit()
     plot.plot_step()
+    plot2.plot_step()
+    plot.showGraph()

@@ -12,6 +12,7 @@ class PlotData:
         self.name = name
         self.xValue = [0]
         self.yValue = [0]
+        self.buffer = None
 
     def addPoint(self, xValue, yValue):
         self.xValue.append(xValue)
@@ -32,13 +33,16 @@ class PlotData:
         # plt.step(x, y + 1, where='mid', label='mid')
         # plt.plot(x, y + 1, 'o--', color='grey', alpha=0.3)
 
-        plt.step(x, y, where='post', label='post')
-        plt.plot(x, y, 'o--', color='grey', alpha=0.3)
+        # plt.step(x, y, where='post', label='post')
+        plt.plot(x, y, '-', color='green', alpha=0.6)
 
-        plt.grid(axis='x', color='0.95')
+        plt.grid(axis='both', color='0.95')
         plt.legend(title='Parameter where:')
         plt.title('plt.step(where=...)')
-        plt.show()
+        self.buffer = plt
+
+    def showGraph(self):
+        self.buffer.show()
 
     def graphInit(self):
         plt.ion()
@@ -60,7 +64,6 @@ class PlotData:
         plt.ylabel("Values")
 
     def updateGraph(self):
-
         new_x = np.asarray(self.xValue)
         new_y = np.asarray(self.yValue)
         # updating data values
