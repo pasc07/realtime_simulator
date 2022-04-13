@@ -11,6 +11,7 @@ class Step(Component):
         self.xi = xi
         self.xf = xf
         self.ts = ts
+        self.outputs = 'step'
 
     def init(self):
         self.currentState = 0

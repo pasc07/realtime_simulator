@@ -4,6 +4,7 @@ from math import inf
 from Const.Const import JOB
 from GBP.Adder import Adder
 from GBP.Buf import Buf
+from GBP.Constante import Constante
 from GBP.Gen import Gen
 from GBP.Proc import Proc
 from GBP.step import Step
@@ -16,7 +17,7 @@ from Simulator.Integral import IntegralDT, IntegralDQ
 
 def Simulator():
     t = 0
-    t_fin = 2
+    t_fin = 20
     ta = 0
     # gen = Gen("Generator 1")
     # proc = Proc("Process 1")
@@ -26,25 +27,28 @@ def Simulator():
     step2 = Step("step2", 0.0, 1, 0.35)
     step3 = Step("step3", 0.0, 1, 1.0)
     step4 = Step("step4", 0.0, 4, 1.5)
-    step5 = Step("step5", 0.0, 4.9, 1.5)
+    # step5 = Step("step5", 0.0, 4.9, 1.5)
     adder = Adder("adder")
-    # adder2 = Adder("adder2")
+    gravity = Step("step5", -9.81, -9.81, 4.6)
+    adder2 = Adder("adder2")
     plot = PlotData("Plot")
     plot2 = PlotData("Plot2")
     plot3 = PlotData("Plot3")
     # plot.graphInit()
     # plot2.graphInit()
     # plot3.graphInit()
-    intg = IntegralDT("IntegralDT")
-    intg2 = IntegralDQ("IntegralDQ")
+    intg = IntegralDT("Integral0")
+    intg2 = IntegralDT("Integral1")
     intg.inputs = [adder.name]
-    intg2.inputs = [adder.name]
-    adder.inputs = [step1.name, step2.name, step3.name, step4.name]
-    Components = [step1, step2, step3, step4, adder, intg, intg2]
-    # adder.inputs = [step3.name]
-    # Components = [ step3, adder, intg]
+    intg2.inputs = [intg.name]
+    intg2.Integral = 10.0
+    intg.attenuation = 0.90
+    # adder.inputs = [step1.name, step2.name, step3.name, step4.name]
+    # Components = [step1, step2, step3, step4, adder, intg, intg2]
+    adder.inputs = [gravity.name]
+    Components = [gravity, adder, intg2, intg]
 
-    # init
+    #  Simulator
     for component in Components:
         component.init()
         ta = component.avancement()
@@ -55,6 +59,10 @@ def Simulator():
     print(f't:  {t}')
     while t < t_fin:
         print(f't Start:  {t}')
+        if intg2.Integral <= 0.0:
+            intg.changeSign()
+
+
         imms = []
         list_tr = []
         # for component in Components:
@@ -142,5 +150,5 @@ def Simulator():
     # plot.updateGraph()
     plot.plot_step(legend=f'{adder.name}')
     plot2.plot_step('Discrete time integral', 'green')
-    plot3.plot_step('DT green, DQ red', 'red')
+    plot3.plot_step('INPUT = Blue, DT = green, DQ = red', 'red')
     plot.showGraph()
