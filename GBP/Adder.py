@@ -22,14 +22,14 @@ class Adder(Component):
     def internal(self):
         if self.currentState == GEN_OUTPUT:
             self.currentState = INIT
-            print(f'Current state Adder : {self.currentState}')
+            # print(f'Current state Adder : {self.currentState}')
 
     def external(self):
         if self.currentState == INIT and self.inputEvents:
-            print(f'inputEvent Adder : {self.inputEvents}')
+            # print(f'inputEvent Adder : {self.inputEvents}')
             self.temp_inputEvents.update(self.inputEvents)
             self.currentState = GEN_OUTPUT
-            print(f'Current state Adder : {self.currentState}')
+            # print(f'Current state Adder : {self.currentState}')
 
     def avancement(self):
         if self.currentState == INIT:
@@ -41,7 +41,7 @@ class Adder(Component):
     def generateOutput(self):
         if self.currentState == GEN_OUTPUT:
             self.write(ADDER, self.add())
-            print("Add operation occured")
+            # print("Add operation occured")
 
     def conflict(self):
         self.external()

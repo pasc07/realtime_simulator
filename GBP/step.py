@@ -17,16 +17,16 @@ class Step(Component):
         self.currentState = 0
 
     def internal(self):
-        print(f'current State (step): {self.currentState}')
+        # print(f'current State (step): {self.currentState}')
         if self.currentState == 0:
             self.currentState = 1
-            print(f'current State (step): {self.currentState}')
+            # print(f'current State (step): {self.currentState}')
         elif self.currentState == 1:
             self.currentState = 2
-            print(f'current State (step): {self.currentState}')
+            # print(f'current State (step): {self.currentState}')
         elif self.currentState == 2:
             self.currentState = 2
-            print(f'current State (step): {self.currentState}')
+            # print(f'current State (step): {self.currentState}')
 
     def external(self):
         pass
@@ -42,10 +42,10 @@ class Step(Component):
     def generateOutput(self):
         if self.currentState == 0:
             self.write(f"{self.name}", self.xi)
-            print(f"Output generate {self.name} xi = {self.xi}")
+            # print(f"Output generate {self.name} xi = {self.xi}")
         elif self.currentState == 1:
             self.write(f"{self.name}", self.xf)
-            print(f"Output generate {self.name} xf = {self.xf}")
+            # print(f"Output generate {self.name} xf = {self.xf}")
 
     def conflict(self):
         self.internal()

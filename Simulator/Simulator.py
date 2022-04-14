@@ -17,7 +17,7 @@ from Simulator.Integral import IntegralDT, IntegralDQ
 
 def Simulator():
     t = 0
-    t_fin = 20
+    t_fin = 30
     ta = 0
     # gen = Gen("Generator 1")
     # proc = Proc("Process 1")
@@ -39,14 +39,15 @@ def Simulator():
     # plot3.graphInit()
     intg = IntegralDT("Integral0")
     intg2 = IntegralDT("Integral1")
+    # intg2.dQ = 0.001
     intg.inputs = [adder.name]
     intg2.inputs = [intg.name]
-    intg2.Integral = 10.0
+    intg2.Integral = 10.0  # init
     intg.attenuation = 0.90
     # adder.inputs = [step1.name, step2.name, step3.name, step4.name]
     # Components = [step1, step2, step3, step4, adder, intg, intg2]
     adder.inputs = [gravity.name]
-    Components = [gravity, adder, intg2, intg]
+    Components = [gravity, adder, intg, intg2]
 
     #  Simulator
     for component in Components:
@@ -58,7 +59,7 @@ def Simulator():
     print("********Les evolutions*********")
     print(f't:  {t}')
     while t < t_fin:
-        print(f't Start:  {t}')
+        # print(f't Start:  {t}')
         if intg2.Integral <= 0.0:
             intg.changeSign()
 
@@ -70,7 +71,7 @@ def Simulator():
         # recuperer les tr dans une liste
         for component in Components:
             list_tr.append(component.tr)
-            print(f'tr {component.name}: {component.tr}')
+            # print(f'tr {component.name}: {component.tr}')
         # recup le min de la liste
         tr_min = min(list_tr)
 
@@ -89,14 +90,14 @@ def Simulator():
         dict_out = {}
         for component in imms:
             component.generateOutput()
-        print(f'adder *********************** dict 1 ={adder.inputEvents} : {adder.output}')
+        # print(f'adder *********************** dict 1 ={adder.inputEvents} : {adder.output}')
         # for component in Components:
         # print(f'La liste des events {component.name}: {component.inputEvents}')
         # Liste des entree impactee par les sortie
         ins = {}
         for component in imms:
             ins.update(component.outputEvents)
-        print(f'La liste des evenements generer pdt le cycle: {ins}')
+        # print(f'La liste des evenements generer pdt le cycle: {ins}')
 
         # Recherche si l'entree est presente et mettre dans inputEvents du composant
         # Notifier
@@ -109,24 +110,24 @@ def Simulator():
         # for component in Components:
         # print(f'La liste des events after init {component.name}: {component.inputEvents}')
         for component in Components:
-            print(f'tr {component.name}: {component.tr}')
+            # print(f'tr {component.name}: {component.tr}')
             # print(f'Imms 2 :{imms}')
             if component in imms and not component.inputEvents:  # dict vide
-                print(f'****Internal {component.name}')
+                # print(f'****Internal {component.name}')
                 component.internal()
                 component.tr = component.avancement()
                 component.tl = t
                 component.tn = t + component.te
                 component.te = 0
             elif component not in imms and component.inputEvents:
-                print(f'****External {component.name}')
+                # print(f'****External {component.name}')
                 component.external()
                 component.tr = component.avancement()
                 component.tl = t
                 component.tn = t + component.te
                 component.te = 0
             elif component in imms and component.inputEvents:
-                print(f'****Conflict {component.name}')
+                # print(f'****Conflict {component.name}')
                 component.conflict()
                 component.tr = component.avancement()
                 component.tl = t
@@ -144,11 +145,11 @@ def Simulator():
         list_tr.clear()
         imms.clear()
         ins.clear()
-        print(f't End:  {t}')
-        print("*********************************************************")
+        # print(f't End:  {t}')
+        # print("*********************************************************")
     # Plot
     # plot.updateGraph()
     plot.plot_step(legend=f'{adder.name}')
     plot2.plot_step('Discrete time integral', 'green')
-    plot3.plot_step('INPUT = Blue, DT = green, DQ = red', 'red')
+    plot3.plot_step('Blue: g, Green: Vitesse, Red: Hauteur', 'red')
     plot.showGraph()
